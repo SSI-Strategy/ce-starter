@@ -733,23 +733,46 @@ h1, h2, h3, h4 {
 .assignment:not(.is-open) .expand-hint::before { content: "Open"; }
 
 .details-cta {
-  padding-top: 10px;
+  padding-top: 14px;
+  margin-top: 4px;
   border-top: 1px dashed var(--rule);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .details-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
   text-decoration: none;
   letter-spacing: 0.01em;
-  padding: 6px 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: all 140ms ease;
 }
-.details-link:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+
+.details-link-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+}
+.details-link-primary:hover {
+  background: var(--accent-hover);
+  color: var(--accent-ink);
+}
+
+.details-link-secondary {
+  background: transparent;
+  color: var(--ink-muted);
+  border: 1px solid var(--rule-strong);
+  font-weight: 500;
+}
+.details-link-secondary:hover {
+  color: var(--ink);
+  border-color: var(--ink);
 }
 
 /* ---------- excluded note ---------- */

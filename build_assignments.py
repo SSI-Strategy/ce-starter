@@ -684,7 +684,11 @@ INDEX_TPL = """<!DOCTYPE html>
     <section class="section section-alt">
       <div class="wrap" style="text-align: center;">
         <h2 class="section-title" style="margin-bottom: 12px;">Ready?</h2>
-        <p class="lede" style="margin: 0 auto 32px;">Open a fresh agent session. Start with the Phase-1 prompt above. Keep a log of every prompt you send — that log is the evidence of your learning.</p>
+        <p class="lede" style="margin: 0 auto 24px;">Create your own copy of the template repo. Clone it. Open a fresh agent session in the cloned directory and start with the Phase-1 prompt above.</p>
+        <p style="margin: 0 0 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+          <a href="https://github.com/SSI-Strategy/ce-{n}-{slug}/generate" target="_blank" rel="noopener" class="btn btn-primary">Use this template</a>
+          <a href="https://github.com/SSI-Strategy/ce-{n}-{slug}" target="_blank" rel="noopener" class="btn btn-secondary">View the repo</a>
+        </p>
         <a href="../../index.html#assignments" class="back-cta">All assignments</a>
       </div>
     </section>
@@ -801,6 +805,7 @@ def render_index(a: dict) -> str:
 
     return INDEX_TPL.format(
         n=a["n"],
+        slug=a["slug"],
         title=esc(a["title"]),
         pitch=esc(a["pitch"]),
         pitch_attr=esc(a["pitch"]),

@@ -14,3 +14,6 @@ __pycache__/
 # node
 node_modules/
 dist/
+
+# generated per-assignment template repos — each has its own remote
+/templates/

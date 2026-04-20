@@ -360,14 +360,15 @@
             <p class="details-text">${a.guardrails}</p>
           </div>
           <div class="details-block details-cta">
-            <a class="details-link" href="assignments/${a.n}-${SLUGS[a.n]}/">Open assignment page →</a>
+            <a class="details-link details-link-primary" href="https://github.com/SSI-Strategy/ce-${a.n}-${SLUGS[a.n]}/generate" target="_blank" rel="noopener">Use this template →</a>
+            <a class="details-link details-link-secondary" href="assignments/${a.n}-${SLUGS[a.n]}/">Read the brief</a>
           </div>
         </div>
       </button>
     `).join("");
 
     gridEl.addEventListener("click", (e) => {
-      if (e.target.closest(".details-link")) return;
+      if (e.target.closest(".details-link") || e.target.closest(".details-cta")) return;
       const card = e.target.closest(".assignment");
       if (!card) return;
       const open = card.classList.toggle("is-open");
