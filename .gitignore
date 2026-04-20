@@ -1,0 +1,16 @@
+# real vendor documents used as reference material only; not for publication
+*.pdf
+
+# editor & OS
+.DS_Store
+.vscode/
+.idea/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# node
+node_modules/
+dist/

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capability Engineer Starter Program</title>
+  <meta name="description" content="A self-directed, full-stack starter program for capability engineers. Ten assignments, one stack, one workflow." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-nav" id="siteNav">
+    <div class="nav-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark">CE</span>
+        <span class="brand-text">Starter Program</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#program">Program</a>
+        <a href="#stack">Stack</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#prompts">Prompts</a>
+        <a href="#assignments">Assignments</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Capability Engineers</p>
+        <h1 class="display">Ship a full-stack app. <em>End to end.</em> In a day.</h1>
+        <p class="lede">
+          This is the starter program for capability engineers. One stack, one workflow, ten assignments.
+          You are the architect and product owner. The agent writes the code. You learn by deciding,
+          questioning, and verifying — not by reading source.
+        </p>
+        <div class="cta-row">
+          <a href="#assignments" class="btn btn-primary">Pick an assignment</a>
+          <a href="#workflow" class="btn btn-secondary">How it works</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="program" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">The program</p>
+          <h2 class="h2">Six phases, one artifact per phase.</h2>
+        </div>
+        <div class="three-col">
+          <article class="tile">
+            <h3 class="tile-title">You direct the agent</h3>
+            <p>Claude Code or Codex writes every line. You never edit source. Learning happens in the prompts you write and the decisions you make.</p>
+          </article>
+          <article class="tile">
+            <h3 class="tile-title">Artifacts, not code</h3>
+            <p>Each phase produces one human-readable artifact: a brief, a data model, a schema, an OpenAPI doc, a running app. That artifact is the contract between phases.</p>
+          </article>
+          <article class="tile">
+            <h3 class="tile-title">Verify without reading code</h3>
+            <p>Every phase ends with a check you run yourself: a SQL query, an OpenAPI "Try it out", a user story walked in the browser.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="section section-alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">The stack</p>
+          <h2 class="h2">SQLite. Python. React. Running on your laptop.</h2>
+          <p class="lede-sm">No Docker. No cloud. Two terminals, two commands. The same stack across all ten assignments, so the only variable is the thing you are building.</p>
+        </div>
+        <div class="stack-grid">
+          <article class="stack-card">
+            <p class="stack-kicker">Database</p>
+            <h3 class="stack-title">SQLite</h3>
+            <p class="stack-body">File-based, zero install, ships with Python. Schema in a single <code>schema.sql</code>. You write real SQL — no ORM.</p>
+          </article>
+          <article class="stack-card">
+            <p class="stack-kicker">Backend</p>
+            <h3 class="stack-title">Python + FastAPI</h3>
+            <p class="stack-body">Python 3.12+, managed with <code>uv</code>. Pydantic for validation. Automatic OpenAPI at <code>/docs</code> — your API contract, visualised.</p>
+          </article>
+          <article class="stack-card">
+            <p class="stack-kicker">Frontend</p>
+            <h3 class="stack-title">React + Vite</h3>
+            <p class="stack-body">TypeScript, plain <code>fetch</code>, types generated from the OpenAPI spec. Minimal styling, no component library by default.</p>
+          </article>
+          <article class="stack-card">
+            <p class="stack-kicker">Glue</p>
+            <h3 class="stack-title">Local-only</h3>
+            <p class="stack-body">Vite dev server proxies <code>/api/*</code> to <code>:8000</code>. No CORS. No auth. One local user. One file on disk.</p>
+          </article>
+        </div>
+        <p class="prereq">
+          <strong>Prerequisites:</strong>
+          Python 3.12+, <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv</a>, Node.js 20+ LTS.
+          SQLite ships with Python.
+        </p>
+      </div>
+    </section>
+
+    <section id="workflow" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">The workflow</p>
+          <h2 class="h2">From rough idea to running app in six phases.</h2>
+          <p class="lede-sm">Each phase descends from the artifact of the last. If a phase reveals a gap, go back and fix the artifact before regenerating the code.</p>
+        </div>
+        <ol class="phase-list" id="phaseList"></ol>
+      </div>
+    </section>
+
+    <section id="prompts" class="section section-alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Prompt library</p>
+          <h2 class="h2">The prompts that do the work.</h2>
+          <p class="lede-sm">Each phase has one or two prompts you can paste into your agent session. Adapt them to your assignment, but keep the structure — each prompt names the artifact it produces and the artifact it descends from.</p>
+        </div>
+        <div class="prompt-list" id="promptList"></div>
+      </div>
+    </section>
+
+    <section id="assignments" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">The ten</p>
+          <h2 class="h2">Pick one you'd want to use.</h2>
+          <p class="lede-sm">All ten are calibrated to the same envelope: four entities give or take one, three user stories, one aggregation report, one state transition. Five come from the clinical-operations domain. Five are general-purpose. Each teaches one identifiable concept beyond CRUD.</p>
+        </div>
+        <div class="filter-row" role="tablist" aria-label="Assignment category">
+          <button class="filter-pill is-active" data-filter="all" role="tab" aria-selected="true">All ten</button>
+          <button class="filter-pill" data-filter="clinical" role="tab" aria-selected="false">Clinical ops</button>
+          <button class="filter-pill" data-filter="general" role="tab" aria-selected="false">General-purpose</button>
+        </div>
+        <div class="assignment-grid" id="assignmentGrid"></div>
+        <div class="excluded-note">
+          <h3 class="h3">Why these ten, and not others</h3>
+          <p>Ideas deliberately not on this list: external data reconciliation, clinical data quality checks, raw data to SDTM mapping, central monitoring with outlier detection, TLF generation, live clinicaltrials.gov feasibility, cross-registry benchmarking. Each is a good idea and worth building later. Each fails at least one of the starter criteria — typically the ones about specialist domain knowledge, external APIs, or statistics beyond aggregation. A future intermediary catalogue will revisit them.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">When you're ready</p>
+          <h2 class="h2">Start here.</h2>
+        </div>
+        <ol class="start-steps">
+          <li><span class="step-num">1</span><div><strong>Install the prerequisites.</strong> Python 3.12+, <code>uv</code>, Node 20+ LTS.</div></li>
+          <li><span class="step-num">2</span><div><strong>Pick one assignment above.</strong> Choose one you would actually want to use, not one that sounds impressive.</div></li>
+          <li><span class="step-num">3</span><div><strong>Tell your reviewer which one.</strong> Before you start phase 1. Their job is to push back if the scope is wrong — better now than after the brainstorm.</div></li>
+          <li><span class="step-num">4</span><div><strong>Open a conversation with your agent.</strong> Phase 1: brainstorm the brief. Use the phase-1 prompt from the library above as your opening.</div></li>
+          <li><span class="step-num">5</span><div><strong>Keep a log of the prompts you actually used.</strong> That log is the primary artifact of your learning. You will reference it in the retrospective.</div></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="footer-brand">Capability Engineer Starter Program</p>
+        <p class="footer-text">Artifacts-first, code-agnostic training for full-stack application development with AI agents.</p>
+      </div>
+      <div class="footer-links">
+        <a href="STACK.md">STACK.md</a>
+        <a href="WORKFLOW.md">WORKFLOW.md</a>
+        <a href="ASSIGNMENTS.md">ASSIGNMENTS.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
