@@ -100,6 +100,19 @@
 
   /* ---------- data: assignments ---------- */
 
+  const SLUGS = {
+    "01": "cro-time-invoice-tracker",
+    "02": "vendor-bid-comparison",
+    "03": "protocol-deviation-log",
+    "04": "site-feasibility-tracker",
+    "05": "clinical-query-tracker",
+    "06": "habit-tracker",
+    "07": "standup-blocker-log",
+    "08": "expense-splitter",
+    "09": "reading-list",
+    "10": "agent-skill-library"
+  };
+
   const assignments = [
     {
       n: "01",
@@ -346,11 +359,15 @@
             <p class="details-label">Guardrails</p>
             <p class="details-text">${a.guardrails}</p>
           </div>
+          <div class="details-block details-cta">
+            <a class="details-link" href="assignments/${a.n}-${SLUGS[a.n]}/">Open assignment page →</a>
+          </div>
         </div>
       </button>
     `).join("");
 
     gridEl.addEventListener("click", (e) => {
+      if (e.target.closest(".details-link")) return;
       const card = e.target.closest(".assignment");
       if (!card) return;
       const open = card.classList.toggle("is-open");

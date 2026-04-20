@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment 05 — Clinical Query Tracker · CE Starter</title>
+  <meta name="description" content="A lightweight tracker for data-management queries raised against case-report-form data: who raised it, which subject and field, when it was answered, and how long it aged." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .assignment-hero { padding: clamp(56px, 9vw, 96px) 0 clamp(32px, 5vw, 56px); }
+    .breadcrumb { font-size: 13px; color: var(--ink-muted); margin-bottom: 28px; }
+    .breadcrumb a { color: var(--ink-muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { margin: 0 8px; color: var(--ink-subtle); }
+    .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 24px; }
+    .hero-meta .big-num { font-family: var(--font-display); font-variation-settings: "opsz" 144; font-size: 72px; line-height: 0.85; color: var(--accent); font-weight: 500; letter-spacing: -0.04em; }
+    .hero-meta .cat-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+    .a-title { font-family: var(--font-display); font-variation-settings: "opsz" 144; font-weight: 500; font-size: clamp(34px, 5vw, 56px); line-height: 1.04; letter-spacing: -0.025em; margin: 0 0 20px; max-width: 18ch; }
+    .a-pitch { font-size: clamp(17px, 1.4vw, 20px); color: var(--ink-muted); max-width: 60ch; margin: 0; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 44px; padding: 28px 0 0; border-top: 1px solid var(--rule); }
+    .fact-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-subtle); margin: 0 0 6px; }
+    .fact-body { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.5; }
+    .callout { background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 22px 26px; margin: 0 0 32px; }
+    .callout h3 { font-family: var(--font-display); font-variation-settings: "opsz" 36; font-size: 18px; font-weight: 500; margin: 0 0 8px; }
+    .callout p { margin: 0; color: var(--ink-muted); font-size: 15px; line-height: 1.55; }
+    .lock-down, .guardrails { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .lock-down li, .guardrails li { padding: 16px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius-sm); color: var(--ink-muted); font-size: 15px; line-height: 1.55; display: grid; grid-template-columns: 28px 1fr; gap: 14px; }
+    .lock-down li::before { content: "→"; color: var(--accent); font-weight: 600; }
+    .guardrails li::before { content: "×"; color: #b4524c; font-weight: 600; font-size: 18px; }
+    .phase-block { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px 30px 30px; margin-bottom: 20px; }
+    .phase-head-row { display: flex; align-items: baseline; gap: 18px; margin-bottom: 10px; flex-wrap: wrap; }
+    .phase-num { font-family: var(--font-display); font-variation-settings: "opsz" 48; font-size: 32px; font-weight: 500; color: var(--accent); line-height: 1; }
+    .phase-num::before { content: "0"; }
+    .phase-block h3 { font-family: var(--font-display); font-variation-settings: "opsz" 48; font-size: 22px; font-weight: 500; margin: 0; line-height: 1.15; }
+    .phase-artifact { font-family: var(--font-mono); font-size: 12px; color: var(--ink-subtle); margin-left: auto; }
+    .phase-lede { color: var(--ink-muted); margin: 0 0 18px; font-size: 15.5px; }
+    .phase-hint { background: var(--bg-alt); border-radius: var(--radius-sm); padding: 14px 18px; margin-top: 16px; font-size: 14.5px; color: var(--ink); line-height: 1.55; }
+    .phase-hint-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-right: 8px; }
+    .back-cta { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border: 1px solid var(--rule-strong); border-radius: 999px; font-size: 14px; font-weight: 500; text-decoration: none; color: var(--ink); background: transparent; transition: all 140ms ease; }
+    .back-cta:hover { border-color: var(--ink); }
+    .section-title { font-family: var(--font-display); font-variation-settings: "opsz" 64; font-size: clamp(24px, 3vw, 32px); font-weight: 500; letter-spacing: -0.015em; margin: 0 0 24px; }
+  </style>
+</head>
+<body>
+  <header class="site-nav is-stuck">
+    <div class="nav-inner">
+      <a href="../../index.html" class="brand">
+        <span class="brand-mark">CE</span>
+        <span class="brand-text">Starter Program</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="../../index.html#stack">Stack</a>
+        <a href="../../index.html#workflow">Workflow</a>
+        <a href="../../index.html#prompts">Prompts</a>
+        <a href="../../index.html#assignments">Assignments</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="assignment-hero">
+      <div class="wrap">
+        <p class="breadcrumb">
+          <a href="../../index.html">CE Starter</a><span>/</span>
+          <a href="../../index.html#assignments">Assignments</a><span>/</span>
+          05
+        </p>
+        <div class="hero-meta">
+          <span class="big-num">05</span>
+          <span class="cat-tag">Clinical ops</span>
+        </div>
+        <h1 class="a-title">Clinical Query Tracker</h1>
+        <p class="a-pitch">A lightweight tracker for data-management queries raised against case-report-form data: who raised it, which subject and field, when it was answered, and how long it aged.</p>
+        <dl class="facts">
+          <div>
+            <p class="fact-label">Primary user</p>
+            <p class="fact-body">A clinical data manager watching query aging across a single study.</p>
+          </div>
+          <div>
+            <p class="fact-label">Concept this teaches</p>
+            <p class="fact-body">Time-derived fields — age_days, is_overdue — computed in the API from stored timestamps rather than stored as mutable columns. Teaches the difference between data and derived views over data.</p>
+          </div>
+          <div>
+            <p class="fact-label">Envelope</p>
+            <p class="fact-body">4 ± 1 entities · 3 user stories · 3 ± 1 screens · one aggregation report · one state transition</p>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-title">Before you start — the three decisions</h2>
+        <p class="lede-sm" style="margin: 0 0 32px;">Your Phase-1 brainstorm must lock these down. Do not start the data model before all three have an answer.</p>
+        <ul class="lock-down">
+          <li>What is a &#x27;query&#x27; attached to — a subject, a visit, a specific field? Pick the smallest unit you can still explain.</li>
+          <li>Who raises queries (DM) and who answers them (site)? Both are represented, but only one event changes the clock.</li>
+          <li>What is the SLA — days to respond? Is &#x27;overdue&#x27; computed server-side or client-side, and why?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap">
+        <h2 class="section-title">The six phases</h2>
+        <p class="lede-sm" style="margin: 0 0 32px;">Each phase shows the generic prompt plus a hint specific to this assignment. Copy the prompt. Adapt its references. Keep its structure.</p>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">1</span>
+            <h3>Brainstorm the use case</h3>
+            <span class="phase-artifact">→ docs/01-brief.md</span>
+          </div>
+          <p class="phase-lede">Sharpen the idea with an LLM until you can name the user, three user stories, the nouns the app tracks, and the verbs the user performs.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">I want to build a small local web application. Help me sharpen the idea by asking me questions. I will answer. After five rounds of questions, summarise what we have agreed on as a one-page brief covering: the user, the three core user stories, the key nouns (things the app tracks), and the key verbs (things the user can do).</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>Write a user story about &#x27;the Monday morning aging report&#x27;. That is the reason this app exists.</div>
+        </article>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">2</span>
+            <h3>Design the data model</h3>
+            <span class="phase-artifact">→ docs/02-data-model.md</span>
+          </div>
+          <p class="phase-lede">Every screen, API call, and query descends from this. Get it right before any code exists.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">Read docs/01-brief.md. Based on the nouns listed there, propose a data model for a SQLite database. For each entity, give me: its fields, each field&#x27;s type and whether it is required, the primary key, any foreign keys, and any uniqueness or check constraints. Show the model as a markdown document, not SQL. Explain every foreign key in one sentence. Then list any ambiguities you had to resolve and why.</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>age_days and is_overdue are not columns. They are derived. Say so in the model document.</div>
+        </article>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">3</span>
+            <h3>Build the database</h3>
+            <span class="phase-artifact">→ backend/schema.sql + app.db</span>
+          </div>
+          <p class="phase-lede">Turn the model into real SQLite. Constraints fail loudly and expose every ambiguity the model left behind.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">Using docs/02-data-model.md as the source of truth, generate backend/schema.sql for SQLite. Include every primary key, foreign key, uniqueness constraint, and check constraint from the model. Add created_at and updated_at where the model specifies them. Then generate backend/seed.sql with 3-5 rows per table covering the happy path and at least one edge case per user story. Finally, wire the schema to apply automatically on backend startup if the database file does not exist.</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>Store opened_at and answered_at as timestamps, not ages. Seed a query that is three weeks old and one that was answered same-day.</div>
+        </article>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">4</span>
+            <h3>Design and build the API</h3>
+            <span class="phase-artifact">→ http://localhost:8000/docs</span>
+          </div>
+          <p class="phase-lede">Design the endpoints as a markdown table first. Build them second. The OpenAPI spec at /docs is the real deliverable.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">Based on the verbs in docs/01-brief.md and the entities in docs/02-data-model.md, propose a REST API. For each endpoint, give me: the method, the path, the request body shape, the response shape, and which user story it serves. Do not write code yet. Return a markdown table.
+
+Once I approve the table, implement these endpoints in FastAPI under backend/app/. Use Pydantic models for every request and response. Use the stdlib sqlite3 module. All routes must be prefixed with /api. Add a GET /api/health that returns {&quot;status&quot;: &quot;ok&quot;}. Make sure every endpoint appears in the OpenAPI docs at /docs with a clear summary and a populated example.</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>Compute age and overdue flag in the API response, not in SQL schema and not in the frontend. There is exactly one correct place.</div>
+        </article>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">5</span>
+            <h3>Build the frontend</h3>
+            <span class="phase-artifact">→ http://localhost:5173</span>
+          </div>
+          <p class="phase-lede">Generate TypeScript types from the OpenAPI spec. Design each screen in markdown. Then build.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">Generate TypeScript types for every request and response in the backend OpenAPI spec at http://localhost:8000/openapi.json. Put them in frontend/src/api/types.ts. Then write a thin client.ts in the same directory with one function per endpoint. Every function must use the generated types — no any.
+
+Then, for each of the three user stories in docs/01-brief.md, propose a screen: what the user sees, what they can do, what state changes after each action. Return a short markdown brief per screen. Do not write components yet.
+
+Once I approve the screens, implement them using React and plain CSS. Use the typed client for every API call. Keep each screen to one route. Show loading and error states for every request. Add one Vitest test per screen that renders it with a mocked client.</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>The list screen should colour-code by age bucket. Pick the buckets before the UI is built.</div>
+        </article>
+        <article class="phase-block">
+          <div class="phase-head-row">
+            <span class="phase-num">6</span>
+            <h3>Integrate and verify</h3>
+            <span class="phase-artifact">→ docs/06-retro.md + a 2–3 minute screen recording</span>
+          </div>
+          <p class="phase-lede">The app is done when a stranger can use it to accomplish the user stories.</p>
+          <div class="prompt-body">
+            <button class="copy-btn" type="button" data-copy>Copy</button>
+            <span class="prompt-text">Let&#x27;s verify. Kill both servers. From the repo root, run `uv sync` in backend/, then `npm install` in frontend/, then start both. Walk me through each user story in the browser. If any story fails or any unexpected error appears, tell me which phase&#x27;s artifact needs to change — do not patch in place.
+
+Then help me write docs/06-retro.md: what surprised me, what I would do differently, where I pushed back on the agent and why. Include the full prompt log from this session.</span>
+          </div>
+          <div class="phase-hint"><span class="phase-hint-label">For this assignment</span>Walk an overdue query to resolved and confirm the &#x27;overdue&#x27; indicator disappears. If the UI still shows red, the derivation is cached incorrectly somewhere.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-title">Deliberately out of scope</h2>
+        <p class="lede-sm" style="margin: 0 0 32px;">If the agent tries to add any of these to your app, push back. They do not serve the three user stories.</p>
+        <ul class="guardrails">
+          <li>No eCRF integration.</li>
+          <li>No user roles beyond one logical DM.</li>
+          <li>No query threading — each query has one answer.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap" style="text-align: center;">
+        <h2 class="section-title" style="margin-bottom: 12px;">Ready?</h2>
+        <p class="lede" style="margin: 0 auto 32px;">Open a fresh agent session. Start with the Phase-1 prompt above. Keep a log of every prompt you send — that log is the evidence of your learning.</p>
+        <a href="../../index.html#assignments" class="back-cta">All assignments</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="footer-brand">Capability Engineer Starter Program</p>
+        <p class="footer-text">Assignment 05 of 10 · Clinical Query Tracker</p>
+      </div>
+      <div class="footer-links">
+        <a href="../../STACK.md">STACK.md</a>
+        <a href="../../WORKFLOW.md">WORKFLOW.md</a>
+        <a href="../../ASSIGNMENTS.md">ASSIGNMENTS.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll("[data-copy]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const text = btn.parentElement.querySelector(".prompt-text").textContent;
+        try { await navigator.clipboard.writeText(text); } catch { /* fallback skipped */ }
+        btn.textContent = "Copied";
+        btn.classList.add("is-copied");
+        setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("is-copied"); }, 1600);
+      });
+    });
+  </script>
+</body>
+</html>

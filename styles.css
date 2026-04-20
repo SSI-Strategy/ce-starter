@@ -732,6 +732,26 @@ h1, h2, h3, h4 {
 .assignment.is-open .expand-hint::before { content: "Hide"; }
 .assignment:not(.is-open) .expand-hint::before { content: "Open"; }
 
+.details-cta {
+  padding-top: 10px;
+  border-top: 1px dashed var(--rule);
+}
+
+.details-link {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  padding: 6px 0;
+}
+.details-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ---------- excluded note ---------- */
 
 .excluded-note {
